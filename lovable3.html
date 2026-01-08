@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{user.username}} | {{user.headline}}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'serif': ['Playfair Display', 'serif'],
+                        'sans': ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        cream: '#FFFBF5',
+                        sand: '#F5EFE6',
+                        mocha: '#8B7355',
+                        espresso: '#3D2C1E',
+                        gold: '#C9A962',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .text-gradient {
+            background: linear-gradient(135deg, #C9A962 0%, #8B7355 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .line-reveal {
+            position: relative;
+        }
+        .line-reveal::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: #C9A962;
+            transition: width 0.4s ease;
+        }
+        .line-reveal:hover::after {
+            width: 100%;
+        }
+        .card-lift {
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        .card-lift:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 30px 60px -15px rgba(61, 44, 30, 0.15);
+        }
+        .marquee {
+            animation: marquee 30s linear infinite;
+        }
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+    </style>
+</head>
+<body class="bg-cream text-espresso antialiased">
+
+    <!-- Floating Badge -->
+    <div class="fixed bottom-6 right-6 z-50">
+        <a href="#" class="flex items-center gap-2 bg-white/90 backdrop-blur-md border border-sand rounded-full px-5 py-2.5 text-xs font-medium text-mocha hover:text-espresso hover:border-gold shadow-sm transition-all">
+            <span class="w-1.5 h-1.5 rounded-full bg-gold"></span>
+            Built with Devfolio.cloud
+        </a>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-40 bg-cream/90 backdrop-blur-lg border-b border-sand/50">
+        <div class="max-w-6xl mx-auto px-8 lg:px-16">
+            <div class="flex items-center justify-between h-24">
+                <a href="#" class="group flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-full border-2 border-espresso flex items-center justify-center">
+                        <span class="font-serif text-xl font-semibold">{{user.username.[0]}}</span>
+                    </div>
+                    <div class="hidden sm:block">
+                        <span class="font-serif text-xl font-medium">{{user.username}}</span>
+                        <span class="text-mocha text-xl font-serif">.</span>
+                    </div>
+                </a>
+                <div class="hidden md:flex items-center gap-10">
+                    <a href="#experience" class="text-sm tracking-wide text-mocha hover:text-espresso line-reveal transition-colors">Experience</a>
+                    <a href="#projects" class="text-sm tracking-wide text-mocha hover:text-espresso line-reveal transition-colors">Projects</a>
+                    <a href="#skills" class="text-sm tracking-wide text-mocha hover:text-espresso line-reveal transition-colors">Skills</a>
+                    <a href="#" class="flex items-center gap-2 text-sm tracking-wide border border-espresso px-6 py-3 hover:bg-espresso hover:text-cream transition-all duration-300">
+                        <i data-lucide="file-text" class="w-4 h-4"></i>
+                        Resume
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="min-h-screen flex items-center pt-24">
+        <div class="max-w-6xl mx-auto px-8 lg:px-16 py-20 w-full">
+            <div class="grid lg:grid-cols-12 gap-16 items-center">
+                <div class="lg:col-span-7 space-y-10">
+                    {{#availability}}
+                    <div class="inline-flex items-center gap-3 border border-gold/50 rounded-full px-5 py-2">
+                        <span class="w-2 h-2 rounded-full bg-gold animate-pulse"></span>
+                        <span class="text-sm tracking-wide text-mocha">{{this}}</span>
+                    </div>
+                    {{/availability}}
+
+                    <div class="space-y-6">
+                        <p class="text-mocha tracking-[0.3em] uppercase text-sm">Hello, I'm</p>
+                        <h1 class="font-serif text-6xl lg:text-8xl font-medium leading-[0.9] tracking-tight">
+                            {{user.username}}<span class="text-gold">.</span>
+                        </h1>
+                        <p class="text-2xl lg:text-3xl text-mocha font-light leading-relaxed">{{user.headline}}</p>
+                    </div>
+
+                    <p class="text-mocha/80 text-lg leading-relaxed max-w-xl">{{bio}}</p>
+
+                    <div class="flex flex-wrap items-center gap-6 pt-6">
+                        <a href="#contact" class="group inline-flex items-center gap-3 bg-espresso text-cream px-10 py-5 hover:bg-mocha transition-colors duration-300">
+                            <span class="tracking-wide">Get in Touch</span>
+                            <i data-lucide="arrow-right" class="w-5 h-5 group-hover:translate-x-1 transition-transform"></i>
+                        </a>
+                        <div class="flex items-center gap-4">
+                            <a href="#" class="w-14 h-14 rounded-full border border-sand flex items-center justify-center text-mocha hover:text-espresso hover:border-espresso transition-all">
+                                <i data-lucide="github" class="w-5 h-5"></i>
+                            </a>
+                            <a href="#" class="w-14 h-14 rounded-full border border-sand flex items-center justify-center text-mocha hover:text-espresso hover:border-espresso transition-all">
+                                <i data-lucide="linkedin" class="w-5 h-5"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-5 relative">
+                    <div class="relative">
+                        <div class="absolute -inset-4 border border-gold/30 rounded-3xl"></div>
+                        <div class="absolute -inset-8 border border-sand rounded-3xl"></div>
+                        <div class="relative aspect-[4/5] rounded-2xl overflow-hidden bg-sand">
+                            <img src="{{user.profileImage}}" alt="{{user.username}}" class="w-full h-full object-cover">
+                        </div>
+                        <div class="absolute -bottom-8 -left-8 bg-white border border-sand rounded-2xl p-8 shadow-xl">
+                            <div class="text-center">
+                                <p class="font-serif text-5xl font-semibold text-gradient">{{user.yearsOfExperience}}+</p>
+                                <p class="text-sm text-mocha mt-2 tracking-wide">Years of Excellence</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Marquee -->
+    <div class="py-12 border-y border-sand overflow-hidden">
+        <div class="marquee flex items-center gap-16 whitespace-nowrap">
+            <span class="text-6xl font-serif text-sand">Strategy</span>
+            <span class="text-gold">✦</span>
+            <span class="text-6xl font-serif text-sand">Design</span>
+            <span class="text-gold">✦</span>
+            <span class="text-6xl font-serif text-sand">Development</span>
+            <span class="text-gold">✦</span>
+            <span class="text-6xl font-serif text-sand">Innovation</span>
+            <span class="text-gold">✦</span>
+            <span class="text-6xl font-serif text-sand">Strategy</span>
+            <span class="text-gold">✦</span>
+            <span class="text-6xl font-serif text-sand">Design</span>
+            <span class="text-gold">✦</span>
+            <span class="text-6xl font-serif text-sand">Development</span>
+            <span class="text-gold">✦</span>
+            <span class="text-6xl font-serif text-sand">Innovation</span>
+            <span class="text-gold">✦</span>
+        </div>
+    </div>
+
+    <!-- Experience Section -->
+    <section id="experience" class="py-32">
+        <div class="max-w-6xl mx-auto px-8 lg:px-16">
+            <div class="grid lg:grid-cols-12 gap-16 mb-20">
+                <div class="lg:col-span-4">
+                    <p class="text-gold tracking-[0.3em] uppercase text-sm mb-4">Career Journey</p>
+                    <h2 class="font-serif text-5xl lg:text-6xl font-medium">Work History</h2>
+                </div>
+                <div class="lg:col-span-8 flex items-end">
+                    <p class="text-mocha text-lg leading-relaxed">A curated selection of professional experiences that have shaped my expertise and creative vision.</p>
+                </div>
+            </div>
+
+            <div class="space-y-0">
+                {{#experience}}
+                <div class="group border-t border-sand py-16 hover:bg-sand/30 transition-colors duration-500 -mx-8 px-8">
+                    <div class="grid lg:grid-cols-12 gap-8">
+                        <div class="lg:col-span-3 space-y-3">
+                            <p class="text-gold font-medium">{{duration}}</p>
+                            <span class="inline-block px-4 py-1.5 border border-sand text-mocha text-xs tracking-wide rounded-full">Full Time Role</span>
+                        </div>
+                        <div class="lg:col-span-9 space-y-8">
+                            <div class="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">
+                                <div>
+                                    <h3 class="font-serif text-3xl font-medium group-hover:text-gradient transition-all">{{role}}</h3>
+                                    <p class="text-mocha mt-2">{{company}} <span class="text-sand mx-2">|</span> {{location}}</p>
+                                </div>
+                                <i data-lucide="arrow-up-right" class="w-6 h-6 text-sand group-hover:text-gold transition-colors"></i>
+                            </div>
+                            <p class="text-mocha/80 leading-relaxed max-w-2xl">{{description}}</p>
+
+                            {{#responsibilities}}
+                            <div class="space-y-4">
+                                <h4 class="text-xs tracking-[0.2em] uppercase text-espresso font-semibold">Key Responsibilities</h4>
+                                <ul class="space-y-3">
+                                    <li class="flex items-start gap-4 text-mocha">
+                                        <span class="w-1 h-1 rounded-full bg-gold mt-3 flex-shrink-0"></span>
+                                        {{.}}
+                                    </li>
+                                </ul>
+                            </div>
+                            {{/responsibilities}}
+
+                            {{#achievements}}
+                            <div class="space-y-4">
+                                <h4 class="text-xs tracking-[0.2em] uppercase text-espresso font-semibold">Key Achievements</h4>
+                                <ul class="space-y-3">
+                                    <li class="flex items-start gap-4 text-mocha">
+                                        <i data-lucide="award" class="w-5 h-5 text-gold flex-shrink-0"></i>
+                                        {{.}}
+                                    </li>
+                                </ul>
+                            </div>
+                            {{/achievements}}
+
+                            <div class="flex flex-wrap gap-3 pt-4">
+                                {{#techStack}}
+                                <span class="px-4 py-2 bg-white border border-sand text-mocha text-sm rounded-full">{{this}}</span>
+                                {{/techStack}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {{/experience}}
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="py-32 bg-sand/30">
+        <div class="max-w-6xl mx-auto px-8 lg:px-16">
+            <div class="text-center mb-20 max-w-3xl mx-auto">
+                <p class="text-gold tracking-[0.3em] uppercase text-sm mb-4">Selected Work</p>
+                <h2 class="font-serif text-5xl lg:text-6xl font-medium mb-6">Key Projects</h2>
+                <p class="text-mocha text-lg leading-relaxed">Showcasing meaningful work that demonstrates creativity, technical excellence, and attention to detail.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-10">
+                {{#projects}}
+                <div class="group bg-white rounded-3xl overflow-hidden card-lift border border-sand/50">
+                    <div class="aspect-[16/10] bg-sand relative overflow-hidden">
+                        <img src="{{imageUrl}}" alt="{{title}}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                        <div class="absolute top-6 left-6">
+                            <span class="px-4 py-2 bg-white/90 backdrop-blur-sm text-espresso text-xs font-medium tracking-wide rounded-full">{{projectStatus}}</span>
+                        </div>
+                    </div>
+                    <div class="p-10 space-y-6">
+                        <h3 class="font-serif text-2xl font-medium group-hover:text-gradient transition-all">{{title}}</h3>
+                        <p class="text-mocha leading-relaxed">{{shortDescription}}</p>
+                        <div class="flex flex-wrap gap-2">
+                            {{#technologiesUsed}}
+                            <span class="px-3 py-1.5 bg-sand/50 text-mocha text-xs rounded-full">{{this}}</span>
+                            {{/technologiesUsed}}
+                        </div>
+                        {{#link}}
+                        <a href="{{link}}" class="inline-flex items-center gap-2 text-espresso font-medium hover:text-gold pt-4 group/link">
+                            <span class="tracking-wide">View Case Study</span>
+                            <i data-lucide="arrow-right" class="w-4 h-4 group-hover/link:translate-x-1 transition-transform"></i>
+                        </a>
+                        {{/link}}
+                    </div>
+                </div>
+                {{/projects}}
+            </div>
+        </div>
+    </section>
+
+    <!-- Achievements Section -->
+    {{#achievements}}
+    <section id="achievements" class="py-32">
+        <div class="max-w-6xl mx-auto px-8 lg:px-16">
+            <div class="text-center mb-20">
+                <p class="text-gold tracking-[0.3em] uppercase text-sm mb-4">Recognition</p>
+                <h2 class="font-serif text-5xl lg:text-6xl font-medium">Awards & Honors</h2>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                {{#achievements}}
+                <div class="group text-center p-10 border border-sand rounded-3xl hover:border-gold/50 hover:bg-sand/20 transition-all duration-300">
+                    <div class="w-20 h-20 rounded-full bg-gradient-to-br from-gold/20 to-mocha/10 mx-auto mb-8 flex items-center justify-center">
+                        {{#iconUrl}}
+                        <img src="{{iconUrl}}" alt="" class="w-10 h-10">
+                        {{/iconUrl}}
+                        {{^iconUrl}}
+                        <i data-lucide="trophy" class="w-10 h-10 text-gold"></i>
+                        {{/iconUrl}}
+                    </div>
+                    <h3 class="font-serif text-xl font-medium mb-3">{{title}}</h3>
+                    <p class="text-mocha text-sm mb-4">{{organization}} • {{year}}</p>
+                    <p class="text-mocha/70 text-sm leading-relaxed">{{description}}</p>
+                </div>
+                {{/achievements}}
+            </div>
+        </div>
+    </section>
+    {{/achievements}}
+
+    <!-- Skills Section -->
+    <section id="skills" class="py-32 bg-espresso text-cream">
+        <div class="max-w-6xl mx-auto px-8 lg:px-16">
+            <div class="text-center mb-20">
+                <p class="text-gold tracking-[0.3em] uppercase text-sm mb-4">Capabilities</p>
+                <h2 class="font-serif text-5xl lg:text-6xl font-medium">Core Expertise</h2>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
+                {{#skills}}
+                <div class="group text-center p-8 border border-mocha/30 rounded-2xl hover:border-gold hover:bg-mocha/10 transition-all duration-300">
+                    <div class="w-14 h-14 rounded-xl bg-mocha/20 mx-auto mb-5 flex items-center justify-center group-hover:bg-gold/20 transition-colors">
+                        <img src="{{icon}}" alt="{{name}}" class="w-7 h-7 opacity-80 group-hover:opacity-100">
+                    </div>
+                    <p class="text-sm font-medium text-cream/80 group-hover:text-cream">{{name}}</p>
+                </div>
+                {{/skills}}
+            </div>
+        </div>
+    </section>
+
+    <!-- Education Section -->
+    <section id="education" class="py-32">
+        <div class="max-w-6xl mx-auto px-8 lg:px-16">
+            <div class="grid lg:grid-cols-2 gap-20">
+                <div class="space-y-12">
+                    <div>
+                        <p class="text-gold tracking-[0.3em] uppercase text-sm mb-4">Background</p>
+                        <h2 class="font-serif text-4xl lg:text-5xl font-medium">Education</h2>
+                    </div>
+
+                    <div class="space-y-8">
+                        {{#education}}
+                        <div class="flex gap-8 group p-8 border border-sand rounded-2xl hover:border-gold/50 transition-colors">
+                            <div class="w-16 h-16 rounded-2xl bg-sand flex items-center justify-center flex-shrink-0 group-hover:bg-gold/20 transition-colors">
+                                <i data-lucide="graduation-cap" class="w-7 h-7 text-mocha group-hover:text-gold transition-colors"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-serif text-xl font-medium">{{degree}}</h3>
+                                <p class="text-mocha mt-1">{{institution}} • {{year}}</p>
+                                <p class="text-gold text-sm mt-2 font-medium">GPA: {{gpa}}</p>
+                            </div>
+                        </div>
+                        {{/education}}
+                    </div>
+                </div>
+
+                {{#certifications}}
+                <div class="space-y-12">
+                    <h2 class="font-serif text-4xl lg:text-5xl font-medium">Certifications</h2>
+                    <div class="space-y-8">
+                        {{#certifications}}
+                        <div class="flex gap-8 group p-8 border border-sand rounded-2xl hover:border-gold/50 transition-colors">
+                            <div class="w-16 h-16 rounded-2xl bg-sand flex items-center justify-center flex-shrink-0 group-hover:bg-gold/20 transition-colors">
+                                <i data-lucide="badge-check" class="w-7 h-7 text-mocha group-hover:text-gold transition-colors"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-serif text-xl font-medium">{{certificationName}}</h3>
+                                <p class="text-mocha mt-1">{{certificationProvider}} • {{certificationYear}}</p>
+                            </div>
+                        </div>
+                        {{/certifications}}
+                    </div>
+                </div>
+                {{/certifications}}
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-32 border-t border-sand">
+        <div class="max-w-4xl mx-auto px-8 lg:px-16 text-center">
+            <p class="text-gold tracking-[0.3em] uppercase text-sm mb-6">Let's Connect</p>
+            <h2 class="font-serif text-5xl lg:text-7xl font-medium mb-8">
+                Let's create<br>something <span class="italic">together</span>.
+            </h2>
+            <p class="text-mocha text-xl mb-12 max-w-xl mx-auto">Ready to bring your vision to life? I'd love to hear about your project.</p>
+            <div class="flex flex-wrap justify-center gap-6">
+                <a href="mailto:{{user.email}}" class="inline-flex items-center gap-3 bg-espresso text-cream px-10 py-5 hover:bg-mocha transition-colors duration-300">
+                    <i data-lucide="mail" class="w-5 h-5"></i>
+                    <span class="tracking-wide">Send me an Email</span>
+                </a>
+                <a href="#" class="inline-flex items-center gap-3 border-2 border-espresso text-espresso px-10 py-5 hover:bg-espresso hover:text-cream transition-all duration-300">
+                    <i data-lucide="calendar" class="w-5 h-5"></i>
+                    <span class="tracking-wide">Book a Call</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-10 border-t border-sand">
+        <div class="max-w-6xl mx-auto px-8 lg:px-16">
+            <p class="text-center text-sm text-mocha">© 2026 {{user.username}} • Crafted with precision & purpose</p>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
