@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{user.username}} | {{user.headline}}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'display': ['Libre Baskerville', 'serif'],
+                        'body': ['Space Grotesk', 'sans-serif'],
+                    },
+                    colors: {
+                        ink: '#0D0D0D',
+                        carbon: '#171717',
+                        smoke: '#262626',
+                        ash: '#404040',
+                        mist: '#A3A3A3',
+                        cloud: '#F5F5F5',
+                        snow: '#FAFAFA',
+                        amber: '#F59E0B',
+                        copper: '#B45309',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Space Grotesk', sans-serif; 
+            background: #FAFAFA;
+            color: #0D0D0D;
+        }
+        
+        /* Split Layout */
+        .split-left {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 45%;
+            height: 100vh;
+            background: #0D0D0D;
+            z-index: 10;
+        }
+        .split-right {
+            margin-left: 45%;
+            width: 55%;
+            min-height: 100vh;
+        }
+        
+        @media (max-width: 1024px) {
+            .split-left {
+                position: relative;
+                width: 100%;
+                height: auto;
+                min-height: 100vh;
+            }
+            .split-right {
+                margin-left: 0;
+                width: 100%;
+            }
+        }
+        
+        /* Premium Typography */
+        .display-elegant {
+            font-family: 'Libre Baskerville', serif;
+            font-weight: 400;
+            letter-spacing: -0.01em;
+        }
+        
+        /* Glowing Accent */
+        .glow-amber {
+            box-shadow: 0 0 40px rgba(245, 158, 11, 0.3),
+                        0 0 80px rgba(245, 158, 11, 0.1);
+        }
+        
+        /* Animated Border */
+        .border-gradient {
+            position: relative;
+            background: #171717;
+        }
+        .border-gradient::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            padding: 1px;
+            background: linear-gradient(135deg, #F59E0B, transparent 50%, #B45309);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            border-radius: inherit;
+        }
+        
+        /* Link Hover */
+        .link-glow {
+            position: relative;
+            color: #A3A3A3;
+            transition: all 0.3s ease;
+        }
+        .link-glow:hover {
+            color: #F59E0B;
+            text-shadow: 0 0 20px rgba(245, 158, 11, 0.5);
+        }
+        
+        /* Card Styles */
+        .card-dark {
+            background: #171717;
+            border: 1px solid #262626;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        .card-dark:hover {
+            border-color: #F59E0B;
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.5);
+        }
+        
+        .card-light {
+            background: #FAFAFA;
+            border: 1px solid #E5E5E5;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        .card-light:hover {
+            border-color: #0D0D0D;
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px -10px rgba(13,13,13,0.1);
+        }
+        
+        /* Progress Bar */
+        .skill-bar {
+            height: 2px;
+            background: #262626;
+            overflow: hidden;
+        }
+        .skill-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #F59E0B, #B45309);
+            transition: width 1s ease;
+        }
+        
+        /* Floating Label */
+        .float-label {
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            padding: 4px 12px;
+            background: #F59E0B;
+            color: #0D0D0D;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+        
+        /* Scroll Indicator */
+        .scroll-indicator {
+            animation: bounce 2s infinite;
+        }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+        
+        /* Number Outline */
+        .number-outline {
+            font-family: 'Libre Baskerville', serif;
+            font-size: 8rem;
+            font-weight: 700;
+            color: transparent;
+            -webkit-text-stroke: 1px #F59E0B;
+            line-height: 1;
+        }
+        
+        /* Timeline */
+        .timeline-line {
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            background: linear-gradient(to bottom, #F59E0B, transparent);
+        }
+        .timeline-dot {
+            position: absolute;
+            left: -4px;
+            top: 8px;
+            width: 9px;
+            height: 9px;
+            background: #F59E0B;
+            border-radius: 50%;
+            box-shadow: 0 0 20px rgba(245, 158, 11, 0.5);
+        }
+        
+        /* Button Styles */
+        .btn-amber {
+            background: #F59E0B;
+            color: #0D0D0D;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-amber:hover {
+            background: #D97706;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px -5px rgba(245, 158, 11, 0.4);
+        }
+        
+        .btn-outline-light {
+            border: 1px solid #E5E5E5;
+            color: #0D0D0D;
+            transition: all 0.3s ease;
+        }
+        .btn-outline-light:hover {
+            background: #0D0D0D;
+            color: #FAFAFA;
+            border-color: #0D0D0D;
+        }
+        
+        .btn-outline-dark {
+            border: 1px solid #262626;
+            color: #F5F5F5;
+            transition: all 0.3s ease;
+        }
+        .btn-outline-dark:hover {
+            background: #F59E0B;
+            color: #0D0D0D;
+            border-color: #F59E0B;
+        }
+        
+        /* Smooth Scroll */
+        html { scroll-behavior: smooth; }
+    </style>
+</head>
+<body>
+
+    <!-- Devfolio Badge -->
+    <a href="https://devfolio.cloud" target="_blank" class="fixed bottom-6 right-6 z-50 flex items-center gap-2 px-4 py-2.5 bg-ink text-cloud text-xs rounded-full shadow-lg hover:bg-amber hover:text-ink transition-all">
+        <span class="w-1.5 h-1.5 bg-amber rounded-full animate-pulse"></span>
+        Built with Devfolio.cloud
+    </a>
+
+    <!-- LEFT FIXED COLUMN -->
+    <aside class="split-left flex flex-col">
+        
+        <!-- Navigation -->
+        <nav class="p-8 flex items-center justify-between">
+            <a href="#" class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg bg-amber flex items-center justify-center text-ink font-display font-bold text-lg">
+                    {{user.username.[0]}}
+                </div>
+            </a>
+            <a href="#" class="btn-outline-dark px-4 py-2 rounded-lg text-sm flex items-center gap-2">
+                <i data-lucide="file-text" class="w-4 h-4"></i>
+                Resume
+            </a>
+        </nav>
+        
+        <!-- Hero Content -->
+        <div class="flex-1 flex flex-col justify-center px-12 lg:px-16">
+            {{#availability}}
+            <div class="flex items-center gap-3 mb-8">
+                <span class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></span>
+                <span class="text-mist text-sm tracking-wide">{{this}}</span>
+            </div>
+            {{/availability}}
+            
+            <p class="text-mist text-sm tracking-widest uppercase mb-4">Hello, I'm</p>
+            <h1 class="display-elegant text-5xl lg:text-6xl xl:text-7xl text-cloud leading-tight mb-6">
+                {{user.username}}<span class="text-amber">.</span>
+            </h1>
+            <p class="text-xl lg:text-2xl text-mist font-light mb-8">{{user.headline}}</p>
+            <p class="text-mist/70 leading-relaxed mb-10 max-w-md">{{bio}}</p>
+            
+            <div class="flex items-center gap-4 mb-12">
+                <a href="#contact" class="btn-amber px-6 py-3 rounded-lg flex items-center gap-2">
+                    Let's Connect
+                    <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </a>
+                <div class="flex gap-2">
+                    <a href="#" class="w-11 h-11 rounded-lg btn-outline-dark flex items-center justify-center">
+                        <i data-lucide="github" class="w-5 h-5"></i>
+                    </a>
+                    <a href="#" class="w-11 h-11 rounded-lg btn-outline-dark flex items-center justify-center">
+                        <i data-lucide="linkedin" class="w-5 h-5"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Stats -->
+            <div class="grid grid-cols-2 gap-6 pt-8 border-t border-smoke">
+                <div>
+                    <p class="text-4xl font-display text-amber">{{user.yearsOfExperience}}+</p>
+                    <p class="text-mist/60 text-sm mt-1">Years Experience</p>
+                </div>
+                <div>
+                    <p class="text-4xl font-display text-amber">50+</p>
+                    <p class="text-mist/60 text-sm mt-1">Projects Completed</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Quick Links -->
+        <nav class="p-8 border-t border-smoke">
+            <div class="flex items-center gap-8">
+                <a href="#experience" class="link-glow text-sm tracking-wide">Experience</a>
+                <a href="#projects" class="link-glow text-sm tracking-wide">Projects</a>
+                <a href="#skills" class="link-glow text-sm tracking-wide">Skills</a>
+                <a href="#contact" class="link-glow text-sm tracking-wide">Contact</a>
+            </div>
+        </nav>
+    </aside>
+
+    <!-- RIGHT SCROLLABLE COLUMN -->
+    <main class="split-right">
+        
+        <!-- Experience Section -->
+        <section id="experience" class="py-24 px-8 lg:px-16 border-b border-neutral-200">
+            <div class="mb-16">
+                <span class="text-amber text-xs font-semibold tracking-widest uppercase">Career Journey</span>
+                <h2 class="display-elegant text-4xl lg:text-5xl text-ink mt-3">Work <em>History</em></h2>
+            </div>
+            
+            <div class="space-y-0">
+                {{#experience}}
+                <div class="relative pl-8 pb-16 border-l border-neutral-200 last:pb-0">
+                    <div class="timeline-dot"></div>
+                    
+                    <div class="card-light rounded-2xl p-8">
+                        <div class="flex flex-wrap items-start justify-between gap-4 mb-6">
+                            <div>
+                                <h3 class="display-elegant text-2xl text-ink">{{role}}</h3>
+                                <p class="text-ash mt-1">{{company}} — {{location}}</p>
+                            </div>
+                            <div class="text-right">
+                                <span class="inline-block px-4 py-1.5 rounded-full bg-amber/10 text-amber text-sm font-medium">
+                                    {{duration}}
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <p class="text-ash/80 leading-relaxed mb-6">{{description}}</p>
+                        
+                        {{#responsibilities}}
+                        <div class="mb-6">
+                            <h4 class="text-ink text-xs font-bold tracking-widest uppercase mb-4">Responsibilities</h4>
+                            <ul class="space-y-2">
+                                <li class="flex items-start gap-3 text-ash/70 text-sm">
+                                    <i data-lucide="check-circle" class="w-4 h-4 text-amber shrink-0 mt-0.5"></i>
+                                    {{.}}
+                                </li>
+                            </ul>
+                        </div>
+                        {{/responsibilities}}
+                        
+                        {{#achievements}}
+                        <div class="mb-6">
+                            <h4 class="text-ink text-xs font-bold tracking-widest uppercase mb-4">Achievements</h4>
+                            <ul class="space-y-2">
+                                <li class="flex items-start gap-3 text-ash/70 text-sm">
+                                    <i data-lucide="trophy" class="w-4 h-4 text-amber shrink-0 mt-0.5"></i>
+                                    {{.}}
+                                </li>
+                            </ul>
+                        </div>
+                        {{/achievements}}
+                        
+                        <div class="flex flex-wrap gap-2">
+                            {{#techStack}}
+                            <span class="px-3 py-1.5 rounded-lg bg-ink text-cloud text-xs font-medium">{{this}}</span>
+                            {{/techStack}}
+                        </div>
+                    </div>
+                </div>
+                {{/experience}}
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="py-24 px-8 lg:px-16 bg-ink text-cloud">
+            <div class="mb-16">
+                <span class="text-amber text-xs font-semibold tracking-widest uppercase">Portfolio</span>
+                <h2 class="display-elegant text-4xl lg:text-5xl text-cloud mt-3">Featured <em>Projects</em></h2>
+            </div>
+            
+            <div class="grid gap-8">
+                {{#projects}}
+                <div class="card-dark rounded-2xl overflow-hidden group">
+                    <div class="grid md:grid-cols-2">
+                        <div class="aspect-[4/3] md:aspect-auto bg-smoke relative overflow-hidden">
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <i data-lucide="folder-open" class="w-16 h-16 text-ash/30"></i>
+                            </div>
+                            <div class="float-label">{{projectStatus}}</div>
+                        </div>
+                        <div class="p-8 flex flex-col justify-center">
+                            <h3 class="display-elegant text-2xl text-cloud group-hover:text-amber transition-colors mb-4">{{title}}</h3>
+                            <p class="text-mist/70 text-sm leading-relaxed mb-6">{{shortDescription}}</p>
+                            <div class="flex flex-wrap gap-2 mb-6">
+                                {{#technologiesUsed}}
+                                <span class="text-xs text-mist/50 font-medium">{{this}}</span>
+                                {{/technologiesUsed}}
+                            </div>
+                            {{#link}}
+                            <a href="{{link}}" class="inline-flex items-center gap-2 text-amber text-sm font-medium hover:underline">
+                                View Project
+                                <i data-lucide="external-link" class="w-4 h-4"></i>
+                            </a>
+                            {{/link}}
+                        </div>
+                    </div>
+                </div>
+                {{/projects}}
+            </div>
+        </section>
+
+        <!-- Awards Section -->
+        {{#achievements}}
+        <section id="awards" class="py-24 px-8 lg:px-16 border-b border-neutral-200">
+            <div class="mb-16">
+                <span class="text-amber text-xs font-semibold tracking-widest uppercase">Recognition</span>
+                <h2 class="display-elegant text-4xl lg:text-5xl text-ink mt-3">Awards & <em>Honors</em></h2>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-6">
+                {{#achievements}}
+                <div class="card-light rounded-2xl p-8 flex gap-6">
+                    <div class="w-14 h-14 rounded-xl bg-amber/10 flex items-center justify-center shrink-0">
+                        {{#iconUrl}}
+                        <img src="{{iconUrl}}" alt="" class="w-7 h-7">
+                        {{/iconUrl}}
+                        {{^iconUrl}}
+                        <i data-lucide="award" class="w-7 h-7 text-amber"></i>
+                        {{/iconUrl}}
+                    </div>
+                    <div>
+                        <h3 class="display-elegant text-lg text-ink">{{title}}</h3>
+                        <p class="text-ash/60 text-sm mt-1">{{organization}} • {{year}}</p>
+                        <p class="text-ash/70 text-sm mt-3 leading-relaxed">{{description}}</p>
+                    </div>
+                </div>
+                {{/achievements}}
+            </div>
+        </section>
+        {{/achievements}}
+
+        <!-- Skills Section -->
+        <section id="skills" class="py-24 px-8 lg:px-16 border-b border-neutral-200">
+            <div class="mb-16">
+                <span class="text-amber text-xs font-semibold tracking-widest uppercase">Expertise</span>
+                <h2 class="display-elegant text-4xl lg:text-5xl text-ink mt-3">Core <em>Skills</em></h2>
+            </div>
+            
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {{#skills}}
+                <div class="card-light rounded-xl p-6 group hover:bg-ink transition-colors">
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-lg bg-amber/10 flex items-center justify-center group-hover:bg-amber/20 transition-colors">
+                            <i data-lucide="zap" class="w-5 h-5 text-amber"></i>
+                        </div>
+                        <span class="font-medium text-ink group-hover:text-cloud transition-colors">{{name}}</span>
+                    </div>
+                </div>
+                {{/skills}}
+            </div>
+        </section>
+
+        <!-- Education Section -->
+        <section id="education" class="py-24 px-8 lg:px-16 border-b border-neutral-200">
+            <div class="grid lg:grid-cols-2 gap-16">
+                <div>
+                    <span class="text-amber text-xs font-semibold tracking-widest uppercase">Background</span>
+                    <h2 class="display-elegant text-4xl text-ink mt-3 mb-10">Education</h2>
+                    
+                    <div class="space-y-6">
+                        {{#education}}
+                        <div class="card-light rounded-xl p-6 flex gap-5">
+                            <div class="w-12 h-12 rounded-xl bg-amber/10 flex items-center justify-center shrink-0">
+                                <i data-lucide="graduation-cap" class="w-6 h-6 text-amber"></i>
+                            </div>
+                            <div>
+                                <h3 class="display-elegant text-lg text-ink">{{degree}}</h3>
+                                <p class="text-ash/60 text-sm mt-1">{{institution}} • {{year}}</p>
+                                <p class="text-amber text-sm font-semibold mt-2">GPA: {{gpa}}</p>
+                            </div>
+                        </div>
+                        {{/education}}
+                    </div>
+                </div>
+                
+                {{#certifications}}
+                <div>
+                    <h3 class="display-elegant text-2xl text-ink mb-8">Certifications</h3>
+                    <div class="space-y-4">
+                        {{#certifications}}
+                        <div class="card-light rounded-xl p-5 flex items-center gap-4">
+                            <div class="w-10 h-10 rounded-lg bg-ink flex items-center justify-center shrink-0">
+                                <i data-lucide="badge-check" class="w-5 h-5 text-amber"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-ink">{{certificationName}}</h4>
+                                <p class="text-ash/60 text-xs mt-0.5">{{certificationProvider}} • {{certificationYear}}</p>
+                            </div>
+                        </div>
+                        {{/certifications}}
+                    </div>
+                </div>
+                {{/certifications}}
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="py-24 px-8 lg:px-16 bg-ink text-cloud">
+            <div class="max-w-2xl">
+                <span class="text-amber text-xs font-semibold tracking-widest uppercase">Get in Touch</span>
+                <h2 class="display-elegant text-4xl lg:text-5xl text-cloud mt-3 mb-6">
+                    Let's build something <em>amazing</em> together.
+                </h2>
+                <p class="text-mist/70 text-lg mb-10">
+                    Ready to bring your vision to life? I'd love to hear about your project.
+                </p>
+                <div class="flex flex-wrap gap-4">
+                    <a href="mailto:" class="btn-amber px-8 py-4 rounded-lg flex items-center gap-3">
+                        <i data-lucide="mail" class="w-5 h-5"></i>
+                        Send Email
+                    </a>
+                    <a href="#" class="btn-outline-dark px-8 py-4 rounded-lg flex items-center gap-3">
+                        <i data-lucide="calendar" class="w-5 h-5"></i>
+                        Book a Call
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="py-8 px-8 lg:px-16 border-t border-neutral-200">
+            <p class="text-ash/60 text-sm">
+                © 2026 {{user.username}} • Crafted with precision & purpose
+            </p>
+        </footer>
+    </main>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
