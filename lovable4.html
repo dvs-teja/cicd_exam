@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{user.username}} | {{user.headline}}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'display': ['Cinzel', 'serif'],
+                        'body': ['Raleway', 'sans-serif'],
+                    },
+                    colors: {
+                        midnight: '#0C1221',
+                        navy: '#152238',
+                        sapphire: '#1E3A5F',
+                        gold: '#D4AF37',
+                        brass: '#B8860B',
+                        champagne: '#F7E7CE',
+                        ivory: '#FFFFF0',
+                        cream: '#FDF5E6',
+                        onyx: '#0F0F0F',
+                        emerald: '#1B4D3E',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Raleway', sans-serif; 
+            background: #0C1221;
+            color: #FFFFF0;
+        }
+        
+        /* Art Deco Typography */
+        .display-deco {
+            font-family: 'Cinzel', serif;
+            font-weight: 500;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+        }
+        
+        /* Gold Gradient Text */
+        .text-gold-gradient {
+            background: linear-gradient(135deg, #D4AF37 0%, #F7E7CE 50%, #D4AF37 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        /* Geometric Pattern Background */
+        .geo-pattern {
+            background-image: 
+                linear-gradient(30deg, transparent 49.5%, rgba(212, 175, 55, 0.03) 49.5%, rgba(212, 175, 55, 0.03) 50.5%, transparent 50.5%),
+                linear-gradient(-30deg, transparent 49.5%, rgba(212, 175, 55, 0.03) 49.5%, rgba(212, 175, 55, 0.03) 50.5%, transparent 50.5%);
+            background-size: 60px 100px;
+        }
+        
+        /* Sunburst Pattern */
+        .sunburst {
+            position: relative;
+        }
+        .sunburst::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 300%;
+            height: 300%;
+            background: repeating-conic-gradient(
+                from 0deg,
+                transparent 0deg 10deg,
+                rgba(212, 175, 55, 0.03) 10deg 20deg
+            );
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+        
+        /* Art Deco Border Frame */
+        .deco-frame {
+            position: relative;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+        .deco-frame::before,
+        .deco-frame::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #D4AF37;
+        }
+        .deco-frame::before {
+            top: -1px;
+            left: -1px;
+            border-right: none;
+            border-bottom: none;
+        }
+        .deco-frame::after {
+            bottom: -1px;
+            right: -1px;
+            border-left: none;
+            border-top: none;
+        }
+        
+        /* Corner Ornaments */
+        .corner-ornament {
+            position: relative;
+        }
+        .corner-ornament::before {
+            content: '◆';
+            position: absolute;
+            top: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #D4AF37;
+            font-size: 12px;
+        }
+        
+        /* Chevron Divider */
+        .chevron-divider {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .chevron-divider::before,
+        .chevron-divider::after {
+            content: '';
+            height: 1px;
+            flex: 1;
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.5), transparent);
+        }
+        
+        /* Deco Card */
+        .card-deco {
+            background: linear-gradient(145deg, rgba(21, 34, 56, 0.8), rgba(12, 18, 33, 0.9));
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            position: relative;
+            transition: all 0.4s ease;
+        }
+        .card-deco::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #D4AF37, transparent);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        .card-deco:hover {
+            border-color: rgba(212, 175, 55, 0.5);
+            transform: translateY(-6px);
+            box-shadow: 0 20px 40px -15px rgba(212, 175, 55, 0.2);
+        }
+        .card-deco:hover::before {
+            opacity: 1;
+        }
+        
+        /* Fan Pattern */
+        .fan-pattern {
+            background: 
+                radial-gradient(circle at 0% 100%, transparent 70%, rgba(212, 175, 55, 0.05) 70%),
+                radial-gradient(circle at 100% 100%, transparent 70%, rgba(212, 175, 55, 0.05) 70%);
+            background-size: 60px 60px;
+            background-position: 0 0, 30px 0;
+        }
+        
+        /* Zigzag Border */
+        .zigzag-top {
+            position: relative;
+        }
+        .zigzag-top::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 10px;
+            background: linear-gradient(135deg, #0C1221 25%, transparent 25%) -20px 0,
+                        linear-gradient(225deg, #0C1221 25%, transparent 25%) -20px 0,
+                        linear-gradient(315deg, #0C1221 25%, transparent 25%),
+                        linear-gradient(45deg, #0C1221 25%, transparent 25%);
+            background-size: 20px 20px;
+            background-color: rgba(212, 175, 55, 0.1);
+        }
+        
+        /* Button Styles */
+        .btn-gold {
+            background: linear-gradient(135deg, #D4AF37, #B8860B);
+            color: #0C1221;
+            font-family: 'Cinzel', serif;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-gold::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s ease;
+        }
+        .btn-gold:hover::before {
+            left: 100%;
+        }
+        .btn-gold:hover {
+            box-shadow: 0 10px 30px -5px rgba(212, 175, 55, 0.5);
+            transform: translateY(-2px);
+        }
+        
+        .btn-outline-gold {
+            border: 1px solid #D4AF37;
+            color: #D4AF37;
+            font-family: 'Cinzel', serif;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+        }
+        .btn-outline-gold:hover {
+            background: #D4AF37;
+            color: #0C1221;
+        }
+        
+        /* Link Hover */
+        .link-deco {
+            color: rgba(255,255,240,0.6);
+            position: relative;
+            transition: color 0.3s ease;
+        }
+        .link-deco::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 50%;
+            width: 0;
+            height: 1px;
+            background: #D4AF37;
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+        .link-deco:hover {
+            color: #D4AF37;
+        }
+        .link-deco:hover::after {
+            width: 100%;
+        }
+        
+        /* Ornamental Line */
+        .ornament-line {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .ornament-line::before,
+        .ornament-line::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #D4AF37);
+        }
+        .ornament-line::after {
+            background: linear-gradient(90deg, #D4AF37, transparent);
+        }
+        
+        /* Timeline Deco */
+        .timeline-deco {
+            position: relative;
+            padding-left: 30px;
+        }
+        .timeline-deco::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            background: linear-gradient(to bottom, #D4AF37, rgba(212, 175, 55, 0.1));
+        }
+        .timeline-deco::after {
+            content: '◇';
+            position: absolute;
+            left: -6px;
+            top: 8px;
+            color: #D4AF37;
+            font-size: 12px;
+        }
+        
+        /* Animated Shimmer */
+        .shimmer {
+            position: relative;
+            overflow: hidden;
+        }
+        .shimmer::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -150%;
+            width: 150%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.1), transparent);
+            animation: shimmer 3s infinite;
+        }
+        @keyframes shimmer {
+            100% { left: 150%; }
+        }
+        
+        /* Section Number */
+        .section-number {
+            font-family: 'Cinzel', serif;
+            font-size: 6rem;
+            font-weight: 700;
+            color: transparent;
+            -webkit-text-stroke: 1px rgba(212, 175, 55, 0.2);
+            line-height: 1;
+        }
+    </style>
+</head>
+<body class="geo-pattern">
+
+    <!-- Devfolio Badge -->
+    <a href="https://devfolio.cloud" target="_blank" class="fixed bottom-6 right-6 z-50 flex items-center gap-2 px-5 py-3 bg-navy border border-gold/30 text-champagne text-xs tracking-widest uppercase hover:border-gold transition-colors">
+        <span class="w-2 h-2 bg-gold animate-pulse"></span>
+        Built with Devfolio.cloud
+    </a>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-40 bg-midnight/95 backdrop-blur-lg border-b border-gold/10">
+        <div class="max-w-7xl mx-auto px-8">
+            <div class="flex items-center justify-between h-24">
+                <a href="#" class="flex items-center gap-4 group">
+                    <div class="w-14 h-14 deco-frame flex items-center justify-center">
+                        <span class="display-deco text-xl text-gold-gradient">{{user.username.[0]}}</span>
+                    </div>
+                    <span class="display-deco text-lg text-ivory tracking-widest">{{user.username}}</span>
+                </a>
+                
+                <div class="hidden md:flex items-center gap-12">
+                    <a href="#experience" class="link-deco text-xs tracking-[0.2em] uppercase">Experience</a>
+                    <a href="#projects" class="link-deco text-xs tracking-[0.2em] uppercase">Projects</a>
+                    <a href="#skills" class="link-deco text-xs tracking-[0.2em] uppercase">Skills</a>
+                    <a href="#" class="btn-outline-gold px-6 py-3 text-xs flex items-center gap-2">
+                        <i data-lucide="file-text" class="w-4 h-4"></i>
+                        Resume
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="relative min-h-screen flex items-center pt-24 overflow-hidden sunburst">
+        <div class="max-w-7xl mx-auto px-8 py-20 w-full relative z-10">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                
+                <div class="space-y-10">
+                    {{#availability}}
+                    <div class="inline-flex items-center gap-4">
+                        <span class="w-8 h-[1px] bg-gold"></span>
+                        <span class="text-gold text-xs tracking-[0.3em] uppercase">{{this}}</span>
+                    </div>
+                    {{/availability}}
+                    
+                    <div class="space-y-6">
+                        <p class="text-champagne/60 text-sm tracking-[0.3em] uppercase">Hello, I'm</p>
+                        <h1 class="display-deco text-5xl md:text-6xl lg:text-7xl leading-tight">
+                            <span class="text-gold-gradient">{{user.username}}</span>
+                        </h1>
+                        <div class="ornament-line py-4">
+                            <span class="text-gold text-lg">◆</span>
+                        </div>
+                        <p class="text-xl md:text-2xl text-champagne/80 font-light tracking-wide">{{user.headline}}</p>
+                    </div>
+                    
+                    <p class="text-champagne/50 leading-relaxed max-w-lg">{{bio}}</p>
+                    
+                    <div class="flex flex-wrap items-center gap-5 pt-6">
+                        <a href="#contact" class="btn-gold px-8 py-4 flex items-center gap-3 text-sm">
+                            Get in Touch
+                            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </a>
+                        <div class="flex items-center gap-3">
+                            <a href="#" class="w-12 h-12 btn-outline-gold flex items-center justify-center">
+                                <i data-lucide="github" class="w-5 h-5"></i>
+                            </a>
+                            <a href="#" class="w-12 h-12 btn-outline-gold flex items-center justify-center">
+                                <i data-lucide="linkedin" class="w-5 h-5"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Hero Visual -->
+                <div class="flex justify-center lg:justify-end">
+                    <div class="relative">
+                        <!-- Decorative Frame -->
+                        <div class="absolute -inset-6 border border-gold/20"></div>
+                        <div class="absolute -inset-12 border border-gold/10"></div>
+                        
+                        <!-- Corner Ornaments -->
+                        <div class="absolute -top-6 -left-6 text-gold text-2xl">◢</div>
+                        <div class="absolute -top-6 -right-6 text-gold text-2xl">◣</div>
+                        <div class="absolute -bottom-6 -left-6 text-gold text-2xl">◥</div>
+                        <div class="absolute -bottom-6 -right-6 text-gold text-2xl">◤</div>
+                        
+                        <!-- Main Container -->
+                        <div class="w-72 h-72 md:w-80 md:h-80 deco-frame bg-navy/50 flex items-center justify-center shimmer">
+                            <div class="text-center">
+                                <p class="section-number">{{user.yearsOfExperience}}</p>
+                                <p class="display-deco text-gold text-xs tracking-[0.3em] mt-2">Years of Excellence</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Bottom Ornament -->
+        <div class="absolute bottom-0 left-0 right-0 flex justify-center pb-10">
+            <div class="flex flex-col items-center gap-2 text-gold/50 animate-bounce">
+                <span class="text-xs tracking-[0.2em] uppercase">Scroll</span>
+                <i data-lucide="chevron-down" class="w-5 h-5"></i>
+            </div>
+        </div>
+    </section>
+
+    <!-- Decorative Divider -->
+    <div class="py-8 flex items-center justify-center gap-4">
+        <span class="w-24 h-[1px] bg-gradient-to-r from-transparent to-gold/50"></span>
+        <span class="text-gold">◆ ◇ ◆</span>
+        <span class="w-24 h-[1px] bg-gradient-to-l from-transparent to-gold/50"></span>
+    </div>
+
+    <!-- Experience Section -->
+    <section id="experience" class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-8">
+            <div class="text-center mb-20">
+                <p class="text-gold text-xs tracking-[0.3em] uppercase mb-4">Career Journey</p>
+                <h2 class="display-deco text-4xl md:text-5xl text-gold-gradient">Work History</h2>
+                <div class="chevron-divider mt-8 max-w-xs mx-auto">
+                    <span class="text-gold">◆</span>
+                </div>
+            </div>
+            
+            <div class="space-y-8">
+                {{#experience}}
+                <div class="card-deco p-8 md:p-12">
+                    <div class="grid md:grid-cols-[200px,1fr] gap-8">
+                        <div class="space-y-4">
+                            <div class="deco-frame inline-block px-4 py-2">
+                                <span class="text-gold text-sm tracking-wider">{{duration}}</span>
+                            </div>
+                            <p class="text-champagne/40 text-xs tracking-widest uppercase">Full Time Role</p>
+                        </div>
+                        
+                        <div class="timeline-deco space-y-6">
+                            <div>
+                                <h3 class="display-deco text-2xl text-ivory">{{role}}</h3>
+                                <p class="text-champagne/60 mt-2">{{company}} — {{location}}</p>
+                            </div>
+                            
+                            <p class="text-champagne/50 leading-relaxed">{{description}}</p>
+                            
+                            {{#responsibilities}}
+                            <div>
+                                <h4 class="text-gold text-xs tracking-[0.2em] uppercase mb-4">Key Responsibilities</h4>
+                                <ul class="space-y-3">
+                                    <li class="flex items-start gap-4 text-champagne/60">
+                                        <span class="text-gold mt-1">◇</span>
+                                        {{.}}
+                                    </li>
+                                </ul>
+                            </div>
+                            {{/responsibilities}}
+                            
+                            {{#achievements}}
+                            <div>
+                                <h4 class="text-gold text-xs tracking-[0.2em] uppercase mb-4">Key Achievements</h4>
+                                <ul class="space-y-3">
+                                    <li class="flex items-start gap-4 text-champagne/60">
+                                        <span class="text-gold mt-1">★</span>
+                                        {{.}}
+                                    </li>
+                                </ul>
+                            </div>
+                            {{/achievements}}
+                            
+                            <div class="flex flex-wrap gap-3 pt-4">
+                                {{#techStack}}
+                                <span class="px-4 py-2 border border-gold/20 text-champagne/70 text-xs tracking-wider">{{this}}</span>
+                                {{/techStack}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {{/experience}}
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="py-24 fan-pattern">
+        <div class="max-w-7xl mx-auto px-8">
+            <div class="text-center mb-20">
+                <p class="text-gold text-xs tracking-[0.3em] uppercase mb-4">Portfolio</p>
+                <h2 class="display-deco text-4xl md:text-5xl text-gold-gradient">Featured Projects</h2>
+                <div class="chevron-divider mt-8 max-w-xs mx-auto">
+                    <span class="text-gold">◆</span>
+                </div>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-8">
+                {{#projects}}
+                <div class="card-deco overflow-hidden group">
+                    <div class="aspect-[16/10] bg-navy relative zigzag-top">
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <i data-lucide="layers" class="w-16 h-16 text-gold/10 group-hover:text-gold/20 transition-colors"></i>
+                        </div>
+                        <div class="absolute top-6 right-6">
+                            <span class="px-4 py-2 bg-gold/10 border border-gold/30 text-gold text-xs tracking-widest uppercase">
+                                {{projectStatus}}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="p-8 space-y-4">
+                        <h3 class="display-deco text-xl text-ivory group-hover:text-gold transition-colors">{{title}}</h3>
+                        <p class="text-champagne/50 text-sm leading-relaxed">{{shortDescription}}</p>
+                        <div class="flex flex-wrap gap-3 pt-2">
+                            {{#technologiesUsed}}
+                            <span class="text-xs text-champagne/40 tracking-wider">{{this}}</span>
+                            {{/technologiesUsed}}
+                        </div>
+                        {{#link}}
+                        <a href="{{link}}" class="inline-flex items-center gap-3 text-gold text-sm tracking-wider uppercase pt-4 link-deco">
+                            View Project
+                            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </a>
+                        {{/link}}
+                    </div>
+                </div>
+                {{/projects}}
+            </div>
+        </div>
+    </section>
+
+    <!-- Awards Section -->
+    {{#achievements}}
+    <section id="awards" class="py-24">
+        <div class="max-w-7xl mx-auto px-8">
+            <div class="text-center mb-16">
+                <p class="text-gold text-xs tracking-[0.3em] uppercase mb-4">Recognition</p>
+                <h2 class="display-deco text-4xl text-gold-gradient">Awards & Honors</h2>
+                <div class="chevron-divider mt-8 max-w-xs mx-auto">
+                    <span class="text-gold">◆</span>
+                </div>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-6">
+                {{#achievements}}
+                <div class="card-deco p-8 text-center group">
+                    <div class="w-20 h-20 mx-auto deco-frame flex items-center justify-center mb-6 group-hover:border-gold/50 transition-colors">
+                        {{#iconUrl}}
+                        <img src="{{iconUrl}}" alt="" class="w-8 h-8">
+                        {{/iconUrl}}
+                        {{^iconUrl}}
+                        <i data-lucide="award" class="w-8 h-8 text-gold"></i>
+                        {{/iconUrl}}
+                    </div>
+                    <h3 class="display-deco text-lg text-ivory">{{title}}</h3>
+                    <p class="text-champagne/40 text-sm mt-2">{{organization}} • {{year}}</p>
+                    <p class="text-champagne/50 text-sm mt-4 leading-relaxed">{{description}}</p>
+                </div>
+                {{/achievements}}
+            </div>
+        </div>
+    </section>
+    {{/achievements}}
+
+    <!-- Skills Section -->
+    <section id="skills" class="py-24 bg-navy/30">
+        <div class="max-w-7xl mx-auto px-8">
+            <div class="text-center mb-16">
+                <p class="text-gold text-xs tracking-[0.3em] uppercase mb-4">Expertise</p>
+                <h2 class="display-deco text-4xl text-gold-gradient">Core Skills</h2>
+                <div class="chevron-divider mt-8 max-w-xs mx-auto">
+                    <span class="text-gold">◆</span>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                {{#skills}}
+                <div class="card-deco p-6 text-center group hover:bg-gold/5">
+                    <div class="w-12 h-12 mx-auto border border-gold/20 flex items-center justify-center mb-4 group-hover:border-gold/50 transition-colors">
+                        <i data-lucide="diamond" class="w-5 h-5 text-gold"></i>
+                    </div>
+                    <p class="text-ivory text-sm tracking-wider">{{name}}</p>
+                </div>
+                {{/skills}}
+            </div>
+        </div>
+    </section>
+
+    <!-- Education Section -->
+    <section id="education" class="py-24">
+        <div class="max-w-7xl mx-auto px-8">
+            <div class="grid lg:grid-cols-2 gap-20">
+                <div>
+                    <div class="mb-12">
+                        <p class="text-gold text-xs tracking-[0.3em] uppercase mb-4">Background</p>
+                        <h2 class="display-deco text-4xl text-gold-gradient">Education</h2>
+                    </div>
+                    
+                    <div class="space-y-6">
+                        {{#education}}
+                        <div class="card-deco p-6 flex gap-6">
+                            <div class="w-16 h-16 deco-frame flex items-center justify-center shrink-0">
+                                <i data-lucide="graduation-cap" class="w-7 h-7 text-gold"></i>
+                            </div>
+                            <div>
+                                <h3 class="display-deco text-lg text-ivory">{{degree}}</h3>
+                                <p class="text-champagne/50 text-sm mt-1">{{institution}} • {{year}}</p>
+                                <p class="text-gold text-sm font-semibold mt-2">GPA: {{gpa}}</p>
+                            </div>
+                        </div>
+                        {{/education}}
+                    </div>
+                </div>
+                
+                {{#certifications}}
+                <div>
+                    <h3 class="display-deco text-2xl text-ivory mb-10">Certifications</h3>
+                    <div class="space-y-4">
+                        {{#certifications}}
+                        <div class="card-deco p-5 flex items-center gap-5">
+                            <div class="w-12 h-12 border border-gold/30 flex items-center justify-center shrink-0">
+                                <i data-lucide="badge-check" class="w-5 h-5 text-gold"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-ivory font-medium tracking-wide">{{certificationName}}</h4>
+                                <p class="text-champagne/40 text-xs mt-0.5 tracking-wider">{{certificationProvider}} • {{certificationYear}}</p>
+                            </div>
+                        </div>
+                        {{/certifications}}
+                    </div>
+                </div>
+                {{/certifications}}
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-24 relative sunburst">
+        <div class="max-w-4xl mx-auto px-8 text-center relative z-10">
+            <div class="chevron-divider mb-8 max-w-xs mx-auto">
+                <span class="text-gold">◆</span>
+            </div>
+            <p class="text-gold text-xs tracking-[0.3em] uppercase mb-6">Get in Touch</p>
+            <h2 class="display-deco text-4xl md:text-5xl lg:text-6xl text-gold-gradient leading-tight">
+                Let's Create Something Extraordinary
+            </h2>
+            <p class="text-champagne/50 text-lg mt-8 max-w-lg mx-auto">
+                Ready to bring your vision to life? I'd love to hear about your project.
+            </p>
+            <div class="flex flex-wrap justify-center gap-5 mt-12">
+                <a href="mailto:" class="btn-gold px-10 py-4 flex items-center gap-3 text-sm">
+                    <i data-lucide="mail" class="w-5 h-5"></i>
+                    Send Email
+                </a>
+                <a href="#" class="btn-outline-gold px-10 py-4 flex items-center gap-3 text-sm">
+                    <i data-lucide="calendar" class="w-5 h-5"></i>
+                    Book a Call
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 border-t border-gold/10">
+        <div class="max-w-7xl mx-auto px-8">
+            <div class="flex flex-col items-center gap-6">
+                <div class="flex items-center gap-4">
+                    <span class="w-12 h-[1px] bg-gold/30"></span>
+                    <span class="text-gold">◆</span>
+                    <span class="w-12 h-[1px] bg-gold/30"></span>
+                </div>
+                <p class="text-champagne/40 text-sm tracking-widest">
+                    © 2026 {{user.username}} • Crafted with Precision & Purpose
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
